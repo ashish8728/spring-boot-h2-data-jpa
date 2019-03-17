@@ -6,7 +6,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -17,7 +16,6 @@ public class TechCompany {
 	private String name;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	//@JoinColumn(name = "engineer_id")
 	private List<SoftwareEngineer> engineers;
 
 	public TechCompany() {
