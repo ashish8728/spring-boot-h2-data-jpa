@@ -1,51 +1,45 @@
 package com.example.jpa;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.jpa.entity.Demo;
-import com.example.jpa.repository.DemoRepository;
+import com.example.jpa.entity.SoftwareEngineer;
+import com.example.jpa.entity.TechCompany;
+import com.example.jpa.repository.TechCompanyRepository;
 
 @RestController
 public class ApplicationController {
 
-	private DemoRepository demoRepository;
+	private TechCompanyRepository TechCompanyRepository;
 
-	public ApplicationController(DemoRepository demoRepository) {
+	public ApplicationController(TechCompanyRepository TechCompanyRepository) {
 		super();
-		this.demoRepository = demoRepository;
+		this.TechCompanyRepository = TechCompanyRepository;
 	}
 
 	@RequestMapping("/welcome")
 	public String welcome() {
-		return "Wecome to Spring JPA Data Application Demo: " + new Date();
+		return "Wecome to Spring JPA Data Application: " + new Date();
 	}
 
-	@RequestMapping("/findAllDemo")
-	public List<Demo> findAllDemo() {
-		return demoRepository.findAll();
+	@RequestMapping("/findAllTechCompany")
+	public List<TechCompany> findAllTechCompany() {
+		return TechCompanyRepository.findAll();
 	}
 
-	@RequestMapping("/createDemo")
-	public String createDemo() {
-		Optional<Demo> demo = demoRepository.findAll().stream().findFirst();
-		if (demo.isPresent()) {
-			Integer id = demo.get().getId() + 1;
-			demoRepository.save(new Demo(id, "Demo " + id));
-		} else {
-			demoRepository.save(new Demo(101, "Demo 1"));
-		}
-		return "New demo has been Created Successfully.";
-	}
-
-	@RequestMapping("/delete/{id}")
-	public String deleteDemo(@PathVariable Integer id) {
-		demoRepository.deleteById(id);
-		return "Demo Deleted Successfully " + id;
+	@RequestMapping("/createTechCompany")
+	public String createTechCompany() {
+		SoftwareEngineer javaEngineer = new SoftwareEngineer("Jon R", "Java");
+		SoftwareEngineer scalaEngineer = new SoftwareEngineer("Megan F", "Scala");
+		SoftwareEngineer pythonEngineer = new SoftwareEngineer("Tommy N", "Python");
+		List<SoftwareEngineer> engineers = Arrays.asList(javaEngineer, scalaEngineer, pythonEngineer);
+		TechCompany company = new TechCompany("TCS", "Tata Consultancy", engineers);
+		TechCompanyRepository.save(company);
+		return "New TechCompany has been Created Successfully.";
 	}
 }
